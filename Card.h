@@ -50,7 +50,7 @@ public:
 	}
 
 	friend ostream& operator<<(ostream& os, const Card& card) {
-		string SuitSymbols[] = { "", "♥", "♦", "♣", "♠" };
+		string SuitSymbols[] = { "♥", "♦", "♣", "♠" };
 		string RankSymbols[] = { "", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
 		if (!card.FaceUp) os << "|#|";
 		if (card.FaceUp) os << "|" << RankSymbols[card.Rank] << SuitSymbols[card.Suit] << "|";;

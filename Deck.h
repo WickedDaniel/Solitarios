@@ -21,14 +21,24 @@ public:
 	};
 
 	void shuffle() {
-		int OriginalSize = Cards->getSize();
-		for (int Index = 0; Index < OriginalSize; Index++) {
-			Cards->goToStart();
-			Card removedCard = Cards->remove();
+		int size = Cards->getSize();
+		if (size <= 1) return;
 
-			int randomPos = rand() % (Cards->getSize() + 1);
-			Cards->goToPos(randomPos);
-			Cards->insert(removedCard);
+		for (int i = size - 1; i > 0; i--) {
+			int j = rand() % (i + 1);
+
+			// Swap elements at position i and j
+			Cards->goToPos(i);
+			Card cardI = Cards->getElement();
+
+			Cards->goToPos(j);
+			Card cardJ = Cards->getElement();
+
+			Cards->goToPos(i);
+			Cards->setElement(cardJ);
+
+			Cards->goToPos(j);
+			Cards->setElement(cardI);
 		}
 	};
 
