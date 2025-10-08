@@ -1,6 +1,6 @@
 #include "Card.h"
 
 int main() {
-
-	return 0;
+	Card newCard = Card(Card::ACE, Card::HEARTS, true);
+	cout << newCard.toString() << endl;
 }

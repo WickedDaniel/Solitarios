@@ -1,34 +1,49 @@
 #pragma once
 #include <math.h>
+#include <stdlib.h>
+#include <string>
+#include <iostream>
 
+using namespace std;
 class Card
 {
 public:
 	enum RANK {
 		ACE = 1, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, J, Q, K
 	};
-	enum FAMILY {
-		DIAMONDS, CLUBS, HEARTS, SPADES
+
+	enum SUIT {
+		NONE, HEARTS, DIAMONDS, CLUBS, SPADES
 	};
+
+	SUIT Suit;
+	RANK Rank;
+	bool FaceUp = false;
+
+	Card(RANK rank, bool faceUp) {
+		Rank = rank;
+		Suit = NONE;
+		FaceUp = faceUp;
+	};
+
+	Card(RANK rank, SUIT suit, bool faceUp) {
+		Suit = suit;
+		Rank = rank;
+		FaceUp = faceUp;
+	};
+
 	bool adjacentTo(Card &anotherCard) {
-		int Difference = abs(this->Rango - anotherCard.Rango);
+		int Difference = abs(this->Rank - anotherCard.Rank);
 		if (Difference == 1 || Difference == 12) {
 			return true;
 		}
 	}
+	const string toString() {
+		string SuitSymbols[]  = {"", "♥", "♦", "♣", "♠"};
+		string RankSymbols[] = {"", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
 
-private:
-	RANK Rango;
-	FAMILY Familia;
-	bool FaceUp = false;
-	Card(RANK r, FAMILY f) {
-		Rango = r;
-		Familia = f;
-	};
-	
-	~Card() {
-	
-	};
-
+		if (!FaceUp) return "|#|";
+		return "|"+RankSymbols[Rank] + SuitSymbols[Suit] + "|";
+	}
 };
 
