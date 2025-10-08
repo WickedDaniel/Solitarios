@@ -21,25 +21,35 @@ public:
 	};
 
 	void shuffle() {
-		int size = Cards->getSize();
-		if (size <= 1) return;
+        int size = Cards->getSize();
+        if (size <= 1) return;
 
-		for (int i = size - 1; i > 0; i--) {
-			int j = rand() % (i + 1);
+        // Convert to array
+        Card* tempArray = new Card[size];
 
-			// Swap elements at position i and j
-			Cards->goToPos(i);
-			Card cardI = Cards->getElement();
+        Cards->goToStart();
+        for (int i = 0; i < size; i++) {
+            tempArray[i] = Cards->getElement();
+            Cards->next();
+        }
 
-			Cards->goToPos(j);
-			Card cardJ = Cards->getElement();
+        // Fisher-Yates shuffle
+        for (int i = size - 1; i > 0; i--) {
+            int j = rand() % (i + 1);
 
-			Cards->goToPos(i);
-			Cards->setElement(cardJ);
+            // Swap
+            Card temp = tempArray[i];
+            tempArray[i] = tempArray[j];
+            tempArray[j] = temp;
+        }
 
-			Cards->goToPos(j);
-			Cards->setElement(cardI);
-		}
+        // Put back
+        Cards->clear();
+        for (int i = 0; i < size; i++) {
+            Cards->append(tempArray[i]);
+        }
+
+        delete[] tempArray;
 	};
 
 	void print() {
