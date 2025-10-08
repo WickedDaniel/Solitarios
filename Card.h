@@ -13,7 +13,7 @@ public:
 	};
 
 	enum SUIT {
-		NONE, HEARTS, DIAMONDS, CLUBS, SPADES
+		HEARTS, DIAMONDS, CLUBS, SPADES
 	};
 
 	SUIT Suit;
@@ -22,7 +22,7 @@ public:
 
 	Card(RANK rank, bool faceUp) {
 		Rank = rank;
-		Suit = NONE;
+		Suit = SPADES;
 		FaceUp = faceUp;
 	};
 
@@ -38,6 +38,7 @@ public:
 			return true;
 		}
 	}
+
 	const string toString() {
 		string SuitSymbols[]  = {"", "♥", "♦", "♣", "♠"};
 		string RankSymbols[] = {"", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
