@@ -125,9 +125,14 @@
   <ItemGroup>
     <ClInclude Include="Card.h" />
     <ClInclude Include="Deck.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GolfGame.h" />
+    <ClInclude Include="GolfState.h" />
     <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="LinkedStack.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Stack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

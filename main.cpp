@@ -1,13 +1,31 @@
 #include "Card.h"
 #include "Deck.h"
+#include "GolfGame.h"
 
 int main() {
-	srand(time(0));
-	// Test Deck
-	Deck deck = Deck();
-	deck.print();
+	srand(time(NULL));
 
-	// Test Shuffle
+	Deck deck = Deck(1);
 	deck.shuffle();
-	deck.print();
+
+	Card drawnCard = Card(Card::ACE, true);
+	//cout << drawnCard << endl;
+
+	GolfGame game = GolfGame();
+	game.inicializarJuego();
+	game.imprimirStacks();
+	game.imprimirDescartes();
+	game.imprimirMano();
+	
+	game.voltearCarta();
+	game.voltearCarta();
+	game.voltearCarta();
+	game.voltearCarta();
+	game.voltearCarta();
+	game.imprimirStacks();
+	game.imprimirDescartes();
+	game.imprimirMano();
+
+
+	//cout << "Deck size: " << deck.getSize() << endl;
 }

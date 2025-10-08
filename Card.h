@@ -20,7 +20,11 @@ public:
 	RANK Rank;
 	bool FaceUp = false;
 
-	Card() {}
+	Card() {
+		Rank = ACE;
+		Suit = SPADES;
+		FaceUp = true;
+	}
 
 	Card(RANK rank, bool faceUp) {
 		Rank = rank;
@@ -39,6 +43,7 @@ public:
 		if (Difference == 1 || Difference == 12) {
 			return true;
 		}
+		return false;
 	}
 
 	const string toString() {
@@ -52,8 +57,9 @@ public:
 	friend ostream& operator<<(ostream& os, const Card& card) {
 		string SuitSymbols[] = { "♥", "♦", "♣", "♠" };
 		string RankSymbols[] = { "", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
-		if (!card.FaceUp) os << "|#|";
-		if (card.FaceUp) os << "|" << RankSymbols[card.Rank] << SuitSymbols[card.Suit] << "|";;
+		if (!card.FaceUp) os << "| # |";
+		if (card.FaceUp && card.Rank == Card::TEN) os << "|" << RankSymbols[card.Rank] << SuitSymbols[card.Suit] << "|";
+		if (card.FaceUp && card.Rank != Card::TEN) os << "| " << RankSymbols[card.Rank] << SuitSymbols[card.Suit] << "|";
 		return os;
 	}
 };
