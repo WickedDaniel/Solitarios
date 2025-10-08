@@ -9,13 +9,14 @@ public:
 	Stack<Card>* Hand;
 	Stack<Card>* Discards;
 
-	~GolfState() {
+	/*~GolfState() {
+		
 		delete Hand;
 		delete Discards;
 		for (int i = 0; i < 7; i++) {
 			delete Stacks[i];
 		}
-	}
+	}*/
 	GolfState() {
 	}
 	GolfState(List<Card>* stacks[7], Stack<Card>* hand, Stack<Card>* discards) {
