@@ -1,6 +1,8 @@
 #include "Card.h"
+#include "Deck.h"
 
 int main() {
+	srand(time(0));
 	// Test adjacentTo
 	Card ACE = Card(Card::ACE, true);
 	Card K = Card(Card::K, true);
@@ -16,4 +18,13 @@ int main() {
 	// Test Print with face down and suit
 	cout << ACE.toString() << endl;
 	cout << K.toString() << endl;
+
+
+	// Test Deck
+	Deck deck = Deck();
+	deck.print();
+
+	// Test Shuffle
+	deck.shuffle();
+	deck.print();
 }

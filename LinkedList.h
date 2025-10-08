@@ -55,18 +55,18 @@ public:
 			throw runtime_error("List is empty.");
 		if (current == tail)
 			throw runtime_error("No current element.");
+
 		E result = current->next->element;
 		Node<E>* temp = current->next;
-		current->next = temp->next;
-		if (current->next == tail)
+
+		// Check if we're removing the tail BEFORE changing pointers
+		if (temp == tail)
 			tail = current;
+
+		current->next = temp->next;
 		delete temp;
 		size--;
 		return result;
-
-		//Node<E>* temp = current->next->next;
-		//delete current->next;
-		//current->next = temp;
 	}
 	void clear() {
 		while (head->next != nullptr) {
