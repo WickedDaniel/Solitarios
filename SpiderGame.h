@@ -9,14 +9,23 @@ class SpiderGame
 private:
 	Deck spiderDeck;
 	Stack<GolfState>* GameStates;
-	List<Card>* Stacks[10];
+	LinkedList<Card>* Stacks[10];
 	Stack<Card>* cardReserve;
-	Stack<Card>* cardLadderComplete;
+	LinkedList<LinkedList<Card>*>* completeLadder;
 
+	void escaleraCompleta(int columna) {
+		// Fondo del stack es la carta mas baja
+		// Tope del stack es la carta mas alta
+		// Si hay una escalera completa, entonces la más alta debe ser K y la más baja A, osea una distancia de 12
+		if (Stacks[columna]->getSize() < 12) return;
+		LinkedList<Card>* ladder = Stacks[columna]->slice(Stacks[columna]->getSize()-12, Stacks[columna]->getSize()+1);
+
+		completeLadder->append(ladder);
+	}
 	void deshacerMovimiento() {}
 
 	void nuevoMovimiento() {
-		GameStates->push(GolfState(Stacks, cardReserve, cardLadderComplete));
+		GameStates->push(GolfState(Stacks, cardReserve, completeLadder));
 	}
 
 	void repartirNaipe(Deck currentDeck) {
@@ -53,7 +62,7 @@ public:
 		for (int stackIndex = 0; stackIndex < 10; stackIndex++) {
 			Stacks[stackIndex] = new LinkedList<Card>();
 		}
-		cardLadderComplete = new LinkedStack<Card>();
+		completeLadder = new LinkedStack<Card>();
 		GameStates = new LinkedStack<GolfState>();
 	}
 
@@ -82,17 +91,17 @@ public:
 			cout << "Card Reserve: " << "(Vacia) " << endl;
 			return;
 		}
-		cout << "Card Reserve: " << cardLadderComplete->topValue() << "x" << cardReserve->getSize() << endl;
+		cout << "Card Reserve: " << completeLadder->topValue() << "x" << cardReserve->getSize() << endl;
 	}
 
 	void imprimirCardLadderComplete() {
-		cout << "Card Ladder Complete: " << cardLadderComplete->topValue() << endl;
+		cout << "Card Ladder Complete: " << completeLadder->topValue() << endl;
 	}
 
 	~SpiderGame() {
 		delete[] Stacks;
 		delete cardReserve;
-		delete cardLadderComplete;
+		delete completeLadder;
 		delete GameStates;
 	}
 
