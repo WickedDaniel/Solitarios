@@ -1,14 +1,21 @@
 #include "Card.h"
 #include "Deck.h"
-#include "GolfGame.h"
+#include "SpiderGame.h"
+#include "windows.h"
 
 int main() {
+	SetConsoleOutputCP(65001);
 	srand(time(NULL));
-	// Adios
+	SpiderGame game = SpiderGame();
 
-	cout << "=== Testing LinkedList slice() ===" << endl << endl;
+	game.inicializarJuego();
+	game.imprimirStacks();
+	game.imprimirCardReserve();
+
+	//cout << "=== Testing LinkedList slice() ===" << endl << endl;
 
 	// Test 1: Basic slice with integers
+	/*
 	cout << "Test 1: Basic slice with integers" << endl;
 	LinkedList<int>* list1 = new LinkedList<int>();
 	for (int i = 0; i < 10; i++) {
@@ -24,6 +31,7 @@ int main() {
 
 	list1->append(sliced1);
 	list1->print();
+	*/
 
 	/*
 	// Si son las 9 rondas

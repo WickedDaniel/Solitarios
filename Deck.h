@@ -11,11 +11,11 @@ private:
 	LinkedList<Card>* Cards = new LinkedList<Card>();
 public:
 	Deck(int decks=1) {
+        Cards->clear();
 		for (int i = 0; i < decks; i++)
-            generateDeck();
+            generateDeck(); 
 	}
 	void generateDeck() {
-        Cards->clear();
 		for (Card::SUIT suit : {Card::HEARTS, Card::DIAMONDS, Card::CLUBS, Card::SPADES}) {
 			for (int rank = Card::ACE; rank <= Card::K; rank++) {
 				Card NewCard = Card((Card::RANK)rank, suit, true); // Creating new card on heap
