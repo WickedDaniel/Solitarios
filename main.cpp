@@ -4,6 +4,7 @@
 
 int main() {
 	srand(time(NULL));
+	// Adios
 
 	cout << "=== Testing LinkedList slice() ===" << endl << endl;
 
