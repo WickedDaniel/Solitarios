@@ -133,7 +133,7 @@ public:
 			cout << "Card Reserve: " << "(Vacia) " << endl;
 			return;
 		}
-		cout << "Card Reserve: " << completeLadder->topValue() << "x" << cardReserve->getSize() << endl;
+		cout << "Card Reserve: " << cardReserve->topValue() << "x" << cardReserve->getSize() << endl;
 	}
 
 	void imprimirCardLadderComplete() {
@@ -160,9 +160,14 @@ public:
 				return; // Si hay alguna columna vacía no permite está acción
 		}
 		for (int i = 0; i < 10; i++) {
-			Stacks[i]->append(cardReserve->pop());
+			Card card = cardReserve->pop();
+			card.FaceUp = true;
+			Stacks[i]->append(card);
 		}
 		nuevoMovimiento();
+	}
+
+	void moverCartas(int cantidad, int col) {
 	}
 
 
