@@ -9,6 +9,7 @@ using std::runtime_error;
 using std::cout;
 using std::endl;
 
+
 template <typename E>
 class LinkedStack : public Stack<E> {
 private:
@@ -20,6 +21,25 @@ public:
 		top = nullptr;
 		size = 0;
 	}
+
+	LinkedStack(const LinkedStack<E>& other) {
+		top = nullptr;
+		size = 0;
+
+		if (other.top == nullptr) return;
+		LinkedStack<E> tempStack;
+
+
+		Node<E>* temp = other.top;
+		while (temp != nullptr) {
+			tempStack.push(E(temp->element));
+			temp = temp->next;
+		}
+		while (!tempStack.isEmpty()) {
+			push(tempStack.pop());
+		}
+	}
+
 	~LinkedStack() {
 		clear();
 	}

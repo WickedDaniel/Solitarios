@@ -1,4 +1,4 @@
-#pragma once
+    #pragma once
 #include "Card.h"
 #include "LinkedList.h"
 
@@ -8,7 +8,7 @@ class Deck
 private:
     // Se utiliza LinkedList para realizar un mejor shuffle
 	// debido a que se puede acceder a cualquier posicion
-	List<Card>* Cards = new LinkedList<Card>();
+	LinkedList<Card>* Cards = new LinkedList<Card>();
 public:
 	Deck(int decks=1) {
 		for (int i = 0; i < decks; i++)

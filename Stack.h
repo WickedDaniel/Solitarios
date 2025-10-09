@@ -4,7 +4,7 @@ template <typename E>
 class Stack {
 public:
 	Stack() {}
-	Stack(const Stack<E>& other) = delete;
+	Stack(const Stack<E>& other) {}
 	void operator= (const Stack<E>& other) = delete;
 	virtual ~Stack() {}
 	virtual void push(E element) = 0;

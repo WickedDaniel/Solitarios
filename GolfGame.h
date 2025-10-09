@@ -8,30 +8,18 @@ class GolfGame
 {
 private:
 	Deck golfDeck;
-	Stack<GolfState>* GameStates;
-	List<Card>* Stacks[7];
-	Stack<Card>* Hand;
-	Stack<Card>* Discards;
+	Stack<GolfState*>* GameStates;
+	LinkedList<Card>* Stacks[7];
+	LinkedStack<Card>* Hand;
+	LinkedStack<Card>* Discards;
 	
-	void deshacerMovimiento() {
-		if (GameStates->isEmpty()) {
-			cout << "No hay movimientos para deshacer" << endl;
-			return;
-		}
-		GolfState estadoAnterior = GameStates->pop();
-		Discards = estadoAnterior.Discards;
-		Hand = estadoAnterior.Hand;
-		for (int i = 0; i < 7; i++) {
-			Stacks[i] = estadoAnterior.Stacks[i];
-		}
-	};
-	void nuevoMovimiento() {
-		GameStates->push(GolfState(Stacks, Hand, Discards));
-	};
-
 	void repartirNaipe(Deck currentDeck) {
+		Hand->clear();
+		for (int i = 0; i < 7; i++) {
+			Stacks[i]->clear();
+		}
 		currentDeck.shuffle();
-        
+
 		// Repartir 5 cartas a cada una de las 7 pilas (Stacks)
 		// Encargado David
         for (int col = 0; col < 7; col++){
@@ -51,7 +39,48 @@ private:
             Hand->push(card);
         }
 
-		voltearCarta();
+		voltearCarta(true);
+	}
+
+	void deshacerMovimiento() {
+		if (GameStates->isEmpty()) {
+			cout << "No hay movimientos para deshacer" << endl;
+			return;
+		}
+
+		GolfState* estadoAnterior = GameStates->pop();
+
+		delete Discards;
+		delete Hand;
+		for (int i = 0; i < 7; i++) {
+			delete Stacks[i];
+		}
+
+		Discards = estadoAnterior->Discards;
+		Hand = estadoAnterior->Hand;
+		for (int i = 0; i < 7; i++) {
+			Stacks[i] = estadoAnterior->Stacks[i];
+		}
+
+		estadoAnterior->Discards = nullptr;
+		estadoAnterior->Hand = nullptr;
+		for (int i = 0; i < 7; i++) {
+			estadoAnterior->Stacks[i] = nullptr;
+		}
+		delete estadoAnterior;
+	};
+
+	void nuevoMovimiento() {
+		GolfState* estado = new GolfState(Stacks, Hand, Discards);
+		estado->movimientos = GameStates->isEmpty() ? 1 : GameStates->topValue()->movimientos + 1;
+		GameStates->push(estado);
+	};
+
+	void limpiarHistorial() {
+		while (!GameStates->isEmpty()) {
+			GolfState* estado = GameStates->pop();
+			delete estado;
+		}
 	}
 
 public:
@@ -61,10 +90,17 @@ public:
 			Stacks[stackIndex] = new LinkedList<Card>();
 		}
 		Discards = new LinkedStack<Card>();
-		GameStates = new LinkedStack<GolfState>();
+		GameStates = new LinkedStack<GolfState*>();
+	}
+
+	void deshacer() {
+		deshacerMovimiento();
 	}
 
 	void inicializarJuego() {
+		limpiarHistorial();
+		Discards->clear();
+
 		golfDeck = Deck();
 		repartirNaipe(golfDeck);
 	}
@@ -84,6 +120,14 @@ public:
 		cout << endl;
 	}
 
+	void imprimirMovimientos() {
+		if (GameStates->isEmpty()) {
+			cout << "Movimientos: 0" << endl;
+			return;
+		}
+		cout << "Movimientos: " << GameStates->topValue()->movimientos << endl;
+	}
+
 	void imprimirMano() {
 		if (Hand->isEmpty()) {
 			cout << "Mano: " << "(Vacia) " << endl;
@@ -93,42 +137,62 @@ public:
 	}
 
 	void imprimirDescartes() {
+		if (Discards->isEmpty()) {
+			cout << "Descartes: " << "(Vacia)" << endl;
+			return;
+		}
 		cout << "Descartes: " << Discards->topValue() << endl;
 	}
 
 	void imprimirDescartesExtendido() {
-		cout << "Descartes: " << Discards->topValue() << endl;
+		if (Discards->isEmpty()) {
+			cout << "Descartes: " << "(Vacia)" << endl;
+			return;
+		}
+		
+		cout << "Descartes: ";
+		Discards->print();
 	}
 
 	~GolfGame() {
-		delete[] Stacks;
+		for (int i = 0; i < 7; i++) {
+			delete Stacks[i];
+		}
 		delete Hand;
 		delete Discards;
 		delete GameStates;
 	}
 
-	void voltearCarta(){
-		if (Hand->isEmpty())
-			return;
+	void voltearCarta(bool start=false){
+		if (Hand->isEmpty()) return;
+		if (!start) nuevoMovimiento();
+
 		Card card = Hand->pop();
 		card.FaceUp = true;
 		Discards->push(card);
-		nuevoMovimiento();
 	}
 
-	void descartarCarta(int stackIndex){
+	void descartarCarta(int stackIndex, bool bypass=false){
 		Stacks[stackIndex]->goToEnd();
 		Stacks[stackIndex]->previous();
 		Card carta = Stacks[stackIndex]->getElement();
 		Card topeDescarte = Discards->topValue();
-		if (!carta.adjacentTo(topeDescarte)) {
+		if (!carta.adjacentTo(topeDescarte) && !bypass) {
 			cout << "Movimiento invalido" << endl;
 			return;
 		}
-
+		nuevoMovimiento();
 		carta.FaceUp = true;
 		Stacks[stackIndex]->remove();
 		Discards->push(carta);
-		nuevoMovimiento();
+	}
+
+	void print() {
+		cout << endl;
+		imprimirMovimientos();
+		imprimirStacks();
+
+		imprimirMano();
+		imprimirDescartes();
 	}
 };

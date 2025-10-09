@@ -4,7 +4,7 @@ template <typename E>
 class List {
 public:
 	List() {}
-	List(const List<E> &other) = delete;
+	List(const List<E>& other) {};
 	void operator=(const List<E>& other) = delete;
 	virtual ~List() {}
 	virtual void insert(E element) = 0;

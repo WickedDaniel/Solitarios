@@ -22,6 +22,18 @@ public:
 		head = current = tail = new Node<E>();
 		size = 0;
 	}
+
+	LinkedList(const LinkedList<E>& other) {
+		head = current = tail = new Node<E>();
+		size = 0;
+		if (other.size == 0) throw runtime_error("Constructor con lista vacia");
+
+		Node<E>* temp = other.head->next;
+		while (temp != nullptr) {
+			this->append(E(temp->element));
+			temp = temp->next;
+		}
+	}
 	~LinkedList() {
 		clear();
 		delete head;
@@ -36,6 +48,15 @@ public:
 		tail = tail->next = new Node<E>(element);
 		size++;
 	}
+	void append(const LinkedList<E>* other) {
+		if (other->size == 0) return;
+		Node<E>* temp = other->head->next;
+		while (temp != nullptr) {
+			this->append(E(temp->element));
+			temp = temp->next;
+		}
+	}
+
 	void setElement(E element) {
 		if (size == 0)
 			throw runtime_error("List is empty.");
@@ -120,6 +141,23 @@ public:
 	int getSize() {
 		return size;
 	}
+
+	LinkedList<E>* slice(int start, int end) {
+		if (start < 0 || end > size || start > end) throw runtime_error("Invalid slice indices.");
+		if (end - start == 0) return new LinkedList<E>();
+		LinkedList<E>* newList = new LinkedList<E>();
+		Node<E>* temp = head->next;
+		for (int i = 0; i < start; i++) {
+			temp = temp->next;
+		}
+		for (int i = start; i < end; i++) {
+			newList->append(E(temp->element));
+			temp = temp->next;
+		}
+
+		return newList;
+	}
+
 	void print() {
 		Node<E>* temp = head->next;
 		cout << "[ ";

@@ -132,6 +132,8 @@
     <ClInclude Include="LinkedStack.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="SpiderGame.h" />
+    <ClInclude Include="SpiderState.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
   <ItemGroup>
