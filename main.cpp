@@ -5,6 +5,7 @@
 #include "SpiderGame.h"
 #include "GolfGame.h"
 #include "windows.h" // No cuestionar
+#undef max
 
 using std::string;
 using std::cin;
@@ -32,7 +33,7 @@ static void clrscr() { cout << "\033[2J\033[1;1H"; };
 static void waitForEnter() {
 	cout << endl;
 	cout << "[!] Presione enter para continuar";
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	clrscr();
 }
 
