@@ -26,6 +26,7 @@ public:
 	LinkedList(const LinkedList<E>& other) {
 		head = current = tail = new Node<E>();
 		size = 0;
+
 		if (other.size == 0) throw runtime_error("Constructor con lista vacia");
 
 		Node<E>* temp = other.head->next;
@@ -142,6 +143,10 @@ public:
 		return size;
 	}
 
+	bool isEmpty(){
+		return getSize() == 0;
+	}
+
 	LinkedList<E>* slice(int start, int end) {
 		if (start < 0 || end > size || start > end) throw runtime_error("Invalid slice indices.");
 		if (end - start == 0) return new LinkedList<E>();
@@ -155,6 +160,19 @@ public:
 			temp = temp->next;
 		}
 
+		return newList;
+	}
+
+	LinkedList<E>* cutTail(int cutSize) {
+		if (cutSize < 0 || cutSize > size) throw runtime_error("Invalid cut size.");
+		if (cutSize == 0) return new LinkedList<E>();
+		LinkedList<E>* newList = new LinkedList<E>();
+		int start = size - cutSize;
+		this->goToEnd();
+		for (int i = 0; i < cutSize; i++) {
+			this->previous();
+			newList->insert(this->remove());
+		}
 		return newList;
 	}
 

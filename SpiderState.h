@@ -4,10 +4,12 @@
 #include "LinkedStack.h"
 #include "LinkedList.h"
 
+
 class SpiderState
 {
+private:
+	static int movimientos;
 public:
-	int movimientos = 0;
 	LinkedList<Card>* Stacks[10];
 	LinkedStack<Card>* listCardReserve;
 	LinkedStack<LinkedList<Card>*>* listCompleteLeader;
@@ -28,11 +30,25 @@ public:
 		}
 	}
 	SpiderState(LinkedList<Card>* stacks[10], LinkedStack<Card>* cardReserve, LinkedStack<LinkedList<Card>*>* completeLadder) {
+		movimientos++;
 		listCardReserve = new LinkedStack<Card>(*cardReserve);
 		listCompleteLeader = new LinkedStack<LinkedList<Card>*>(*completeLadder);
 		for (int i = 0; i < 10; i++) {
+			if (stacks[i]->isEmpty()) {
+				Stacks[i] = new LinkedList<Card>();
+				continue;
+			}
 			Stacks[i] = new LinkedList<Card>(*stacks[i]);
 		}
+	}
+
+	static int getMovimientos() {
+		return movimientos;
+	}
+
+	static int reiniciarMovimientos() {
+		movimientos = 0;
+		return movimientos;
 	}
 
 	friend ostream& operator<<(ostream& os, const SpiderState& spider) {
@@ -40,3 +56,5 @@ public:
 		return os;
 	}
 };
+
+int SpiderState::movimientos = 0;

@@ -72,7 +72,6 @@ private:
 
 	void nuevoMovimiento() {
 		GolfState* estado = new GolfState(Stacks, Hand, Discards);
-		estado->movimientos = GameStates->isEmpty() ? 1 : GameStates->topValue()->movimientos + 1;
 		GameStates->push(estado);
 	};
 
@@ -98,11 +97,41 @@ public:
 	}
 
 	void inicializarJuego() {
+		GolfState::reiniciarMovimientos();
 		limpiarHistorial();
 		Discards->clear();
 
 		golfDeck = Deck();
 		repartirNaipe(golfDeck);
+	}
+
+	bool rondaTerminada() {
+		
+		if (Hand->isEmpty()) {
+			for (int i = 0; i < 7; i++) {
+				Card descarteTope = Discards->topValue();
+				if (Stacks[i]->isEmpty()) continue;
+				Stacks[i]->goToEnd();
+				Stacks[i]->previous();
+				if (Stacks[i]->getElement().adjacentTo(descarteTope)) return false;
+			}
+			return true;
+		}
+
+		for (int i = 0; i < 7; i++) {
+			if (Stacks[i]->isEmpty()) continue;
+			return false;
+		}
+
+		return true;
+	}
+
+	int calcularPuntaje() {
+		int puntaje = 0;
+		for (int i = 0; i < 7; i++) {
+			puntaje += Stacks[i]->getSize();
+		}
+		return puntaje - Hand->getSize();
 	}
 
 	void imprimirStacks() {
@@ -120,12 +149,19 @@ public:
 		cout << endl;
 	}
 
-	void imprimirMovimientos() {
-		if (GameStates->isEmpty()) {
-			cout << "Movimientos: 0" << endl;
-			return;
+	void imprimirNumeroColumnas() {
+		for (int i = 0; i < 7; i++) {
+			cout << "  " << i + 1 << "   ";
 		}
-		cout << "Movimientos: " << GameStates->topValue()->movimientos << endl;
+		cout << endl;
+		for (int i = 0; i < 7; i++) {
+			cout << "  ↓   ";
+		}
+		cout << endl;
+	}
+
+	void imprimirMovimientos() {
+		cout << "Movimientos: " << GolfState::getMovimientos() << endl;
 	}
 
 	void imprimirMano() {
@@ -172,27 +208,38 @@ public:
 		Discards->push(card);
 	}
 
-	void descartarCarta(int stackIndex, bool bypass=false){
+	bool descartarCarta(int stackIndex, bool bypass=false){
+		if (stackIndex < 0 || stackIndex > 7) {
+			cout << "Columna invalida" << endl;
+			return 0;
+		}
+		if (Stacks[stackIndex]->isEmpty()) {
+			cout << "Descarte invalido" << endl;
+			return 0;
+		}
 		Stacks[stackIndex]->goToEnd();
 		Stacks[stackIndex]->previous();
 		Card carta = Stacks[stackIndex]->getElement();
 		Card topeDescarte = Discards->topValue();
 		if (!carta.adjacentTo(topeDescarte) && !bypass) {
 			cout << "Movimiento invalido" << endl;
-			return;
+			return 0;
 		}
 		nuevoMovimiento();
 		carta.FaceUp = true;
 		Stacks[stackIndex]->remove();
 		Discards->push(carta);
+		return true;
 	}
 
 	void print() {
 		cout << endl;
 		imprimirMovimientos();
+		imprimirNumeroColumnas();
 		imprimirStacks();
 
-		imprimirMano();
 		imprimirDescartes();
+		imprimirMano();
+		cout << endl;
 	}
 };

@@ -6,8 +6,9 @@
 
 class GolfState
 {
+private:
+	static int movimientos;
 public:
-	int movimientos = 0;
 	LinkedList<Card>* Stacks[7];
 	LinkedStack<Card>* Hand;
 	LinkedStack<Card>* Discards;
@@ -30,9 +31,23 @@ public:
 	GolfState(LinkedList<Card>* stacks[7], LinkedStack<Card>* hand, LinkedStack<Card>* discards) {
 		Hand = new LinkedStack<Card>(*hand);
 		Discards = new LinkedStack<Card>(*discards);
-		for (int i = 0; i < 10; i++) {
-			Stacks[i] = new LinkedList<Card>(*Stacks[i]);
+		for (int i = 0; i < 7; i++) {
+			if (stacks[i]->isEmpty()) {
+				Stacks[i] = new LinkedList<Card>();
+				continue;
+			}
+			Stacks[i] = new LinkedList<Card>(*stacks[i]);
 		}
+		movimientos++;
+	}
+
+	static int getMovimientos() {
+		return movimientos;
+	}
+
+	static int reiniciarMovimientos() {
+		movimientos = 0;
+		return movimientos;
 	}
 
 	friend ostream& operator<<(ostream& os, const GolfState& golf) {
@@ -41,3 +56,4 @@ public:
 	}
 };
 
+int GolfState::movimientos = 0;

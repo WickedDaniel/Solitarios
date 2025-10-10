@@ -12,8 +12,13 @@ private:
 public:
 	Deck(int decks=1) {
         Cards->clear();
-		for (int i = 0; i < decks; i++)
-            generateDeck(); 
+        for (int i = 0; i < decks; i++)
+            generateDeck();
+	}
+    Deck(int decks, Card::SUIT suitToUse) {
+        Cards->clear();
+        for (int i = 0; i < decks; i++)
+			generateDeck(suitToUse);
 	}
 	void generateDeck() {
 		for (Card::SUIT suit : {Card::HEARTS, Card::DIAMONDS, Card::CLUBS, Card::SPADES}) {
@@ -22,6 +27,14 @@ public:
 				Cards->append(NewCard);
 			}
 		}
+	};
+    void generateDeck(Card::SUIT suitToUse) {
+        for (Card::SUIT suit : {Card::HEARTS, Card::DIAMONDS, Card::CLUBS, Card::SPADES}) {
+            for (int rank = Card::ACE; rank <= Card::K; rank++) {
+                Card NewCard = Card((Card::RANK)rank, suitToUse, true);
+                Cards->append(NewCard);
+            }
+        }
 	};
 
     int getSize() {

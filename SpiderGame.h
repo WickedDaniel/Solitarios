@@ -14,37 +14,42 @@ private:
 	LinkedStack<Card>* cardReserve;
 	LinkedStack<LinkedList<Card>*>* completeLadder;
 
-	void escaleraCompleta() {
+	void escaleraCompleta(int columna) {
 		// Fondo del stack es la carta mas baja
 		// Tope del stack es la carta mas alta
 		// Si hay una escalera completa, entonces la más alta debe ser K y la más baja A, osea una distancia de 12
+		if (Stacks[columna]->getSize() < 13) return;
+		LinkedList<Card>* ladder = Stacks[columna]->slice(Stacks[columna]->getSize() - 13, Stacks[columna]->getSize());
+		ladder->goToStart();
 
-		//if (Stacks[columna]->getSize() < 12) return;
-		//LinkedList<Card>* ladder = Stacks[columna]->slice(Stacks[columna]->getSize() - 12, Stacks[columna]->getSize() + 1);
-		//for (int i = 0; i < 10; i++) {
-		//	completeLadder->push(Stacks[i]);
+		for (int i = 0; i < 12; i++) {
+			Card currentCard = ladder->getElement();
+			ladder->next();
+			Card nextCard = ladder->getElement();
+			if (!nextCard.isDescending(currentCard)) {
+				delete ladder;
+				return;
+			}
+		}
 
-		//}Aca estaba probando xde
+		delete ladder;
+		ladder = Stacks[columna]->cutTail(13);
+		completeLadder->push(ladder);
 	}
 
-	void nuevoMovimiento() {
+	void guardarEstado() {
 		SpiderState* estado = new SpiderState(Stacks, cardReserve, completeLadder);
-		estado->movimientos = GameStates->isEmpty() ? 1 : GameStates->topValue()->movimientos + 1;
 		GameStates->push(estado);
-
 	}
 
 
 	void deshacerMovimiento() {
-
 		if (GameStates->isEmpty()) {
 			cout << "No hay movimientos para deshacer" << endl;
 			return;
 		}
 
 		SpiderState* estadoAnterior = GameStates->pop();
-
-
 		delete completeLadder;
 		delete cardReserve;
 		for (int i = 0; i < 10; i++) {
@@ -67,6 +72,10 @@ private:
 
 
 	void repartirNaipe(Deck currentDeck) {
+		cardReserve->clear();
+		for (int i = 0; i < 10; i++) {
+			Stacks[i]->clear();
+		}
 		currentDeck.shuffle();
 
 		for (int col = 0; col < 10; col++) {
@@ -105,7 +114,12 @@ public:
 	}
 
 	void inicializarJuego() {
-		spiderDeck = Deck(2);
+		SpiderState::reiniciarMovimientos();
+		limpiarHistorial();
+		cardReserve->clear();
+		completeLadder->clear();
+
+		spiderDeck = Deck(2, Card::SPADES);
 		repartirNaipe(spiderDeck);
 	}
 
@@ -137,7 +151,7 @@ public:
 		cout << "Card Reserve: " << cardReserve->topValue() << "x" << cardReserve->getSize() << endl;
 	}
 
-	void imprimirCardLadderComplete() {
+	void imprimirCompleteLadders() {
 		if (completeLadder->isEmpty()) return;
 
 		LinkedStack<LinkedList<Card>*>* nuevoLadder = new LinkedStack<LinkedList<Card>*>(*completeLadder);
@@ -174,37 +188,106 @@ public:
 		delete nuevoLadder;
 	}
 
-
 	void deshacer() {
 		deshacerMovimiento();
 	}
 
 	void imprimirMovimientos() {
-		if (GameStates->isEmpty()) {
-			cout << "Movimientos: 0" << endl;
-			return;
-		}
-		cout << "Movimientos: " << GameStates->topValue()->movimientos << endl;
+		cout << "Movimientos: " << SpiderState::getMovimientos() << endl;
 	}
 
 	void solicitarCartas(bool start = false) {
 		if (cardReserve->getSize() < 10)
 			return;
-		for (int i = 0; i < 10; i++) {
-			if (Stacks[i]->getSize() == 0)
-				return; // Si hay alguna columna vacía no permite está acción
-		}
+
+		guardarEstado();
 		for (int i = 0; i < 10; i++) {
 			Card card = cardReserve->pop();
 			card.FaceUp = true;
 			Stacks[i]->append(card);
 		}
-		nuevoMovimiento();
 	}
 
-	void moverCartas(int cantidad, int col) {
+	// Columnas 0-9
+	bool moverCartas(int columna, int cantidad, int destino) {
+		// Hacer slice 
+		if (columna < 0 || columna > 9 || destino < 0 || destino > 9 || cantidad <= 0) {
+			cout << "Movimiento invalido" << endl;
+			return false;
+		}
+		if (Stacks[columna]->getSize() < cantidad) {
+			cout << "Movimiento invalido" << endl;
+			return false;
+		}
+		LinkedList<Card>* columnaOrigen = Stacks[columna];
+		LinkedList<Card>* columnaDestino = Stacks[destino];
+		LinkedList<Card>* movingCards = columnaOrigen->slice(columnaOrigen->getSize() - cantidad, columnaOrigen->getSize());
+
+		// Verificar que la escalera solicitada para mover sea valida
+		Card previousCard;
+		for (movingCards->goToStart(); !movingCards->atEnd(); movingCards->next()) {
+			if (!movingCards->getElement().FaceUp) {
+				cout << "Movimiento invalido" << endl;
+				delete movingCards;
+				return false;
+			}
+			if (movingCards->atStart()) {
+				previousCard = movingCards->getElement();
+				continue;
+			}
+
+			Card currentCard = movingCards->getElement();
+			if (!currentCard.isDescending(previousCard)) {
+				cout << "Movimiento invalido" << endl;
+				delete movingCards;
+				return false; 
+			}
+			previousCard = movingCards->getElement();
+		}
+
+		// Verificar que la base de la escalera a mover sea descendiente a la base de la columna destino
+		if (!columnaDestino->isEmpty()) {
+			movingCards->goToStart();
+			columnaDestino->goToEnd();
+			columnaDestino->previous();
+
+			Card baseCard = movingCards->getElement();
+			Card baseDestino = columnaDestino->getElement();
+			if (!baseCard.isDescending(baseDestino)) {
+				cout << "Movimiento invalido" << endl;
+				delete movingCards;
+				return false;
+			}
+		}
+
+		// Realizar el movimiento
+		guardarEstado();
+		cout << columnaOrigen->getSize() << endl;
+		LinkedList<Card>* newTail = columnaOrigen->cutTail(cantidad);
+		columnaDestino->append(movingCards);
+		columnaOrigen->goToEnd();
+		columnaOrigen->previous();
+
+		if (!columnaOrigen->isEmpty() && !columnaOrigen->getElement().FaceUp) {
+			Card flippedCard = columnaOrigen->getElement();
+			flippedCard.FaceUp = true;
+			columnaOrigen->setElement(flippedCard);
+		}
+
+		delete newTail;
+		delete movingCards;
+		escaleraCompleta(destino);
+		return true;
 	}
 
+	bool rondaTerminada() {
+		for (int i = 0; i < 10; i++) {
+			if (Stacks[i]->isEmpty()) continue;
+			return false;
+		}
+
+		return true;
+	}
 
 	~SpiderGame() {
 		
@@ -216,5 +299,25 @@ public:
 		delete GameStates;
 	}
 
-};
+	void imprimirNumeroColumnas() {
+		for (int i = 0; i < 10; i++) {
+			cout << "  " << i + 1 << "   ";
+		}
+		cout << endl;
+		for (int i = 0; i < 10; i++) {
+			cout << "  ↓   ";
+		}
+		cout << endl;
+	}
 
+	void print() {
+		cout << endl;
+		imprimirMovimientos();
+		imprimirNumeroColumnas();
+		imprimirStacks();
+		imprimirCardReserve();
+		imprimirCompleteLadders();
+		cout << endl;
+	}
+
+};
