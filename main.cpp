@@ -10,6 +10,9 @@ using std::endl;
 using std::stoi;
 
 
+
+
+
 // Black magic
 const bool ADMIN = true;
 bool BYPASS = false;

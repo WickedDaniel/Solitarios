@@ -30,9 +30,6 @@
     <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GolfState.h">
       <Filter>Header Files</Filter>
     </ClInclude>

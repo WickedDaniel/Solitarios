@@ -125,7 +125,6 @@
   <ItemGroup>
     <ClInclude Include="Card.h" />
     <ClInclude Include="Deck.h" />
-    <ClInclude Include="GameState.h" />
     <ClInclude Include="GolfGame.h" />
     <ClInclude Include="GolfState.h" />
     <ClInclude Include="LinkedList.h" />
