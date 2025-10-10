@@ -16,6 +16,7 @@ int main() {
 	game.imprimirStacks();
 	game.imprimirCardReserve();
 
+
 	//cout << "=== Testing LinkedList slice() ===" << endl << endl;
 
 	// Test 1: Basic slice with integers

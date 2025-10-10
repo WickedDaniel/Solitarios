@@ -14,16 +14,17 @@ private:
 	LinkedStack<Card>* cardReserve;
 	LinkedStack<LinkedList<Card>*>* completeLadder;
 
-
-	void escaleraCompleta(int columna) {
+	void escaleraCompleta() {
 		// Fondo del stack es la carta mas baja
 		// Tope del stack es la carta mas alta
 		// Si hay una escalera completa, entonces la más alta debe ser K y la más baja A, osea una distancia de 12
 
-		if (Stacks[columna]->getSize() < 12) return;
-		LinkedList<Card>* ladder = Stacks[columna]->slice(Stacks[columna]->getSize() - 12, Stacks[columna]->getSize() + 1);
+		//if (Stacks[columna]->getSize() < 12) return;
+		//LinkedList<Card>* ladder = Stacks[columna]->slice(Stacks[columna]->getSize() - 12, Stacks[columna]->getSize() + 1);
+		//for (int i = 0; i < 10; i++) {
+		//	completeLadder->push(Stacks[i]);
 
-		completeLadder->push(ladder);
+		//}Aca estaba probando xde
 	}
 
 	void nuevoMovimiento() {
@@ -137,8 +138,42 @@ public:
 	}
 
 	void imprimirCardLadderComplete() {
-		cout << "Card Ladder Complete: " << completeLadder->topValue() << endl;
+		if (completeLadder->isEmpty()) return;
+
+		LinkedStack<LinkedList<Card>*>* nuevoLadder = new LinkedStack<LinkedList<Card>*>(*completeLadder);
+		LinkedStack<LinkedList<Card>*> listaLadder;
+
+		while (!nuevoLadder->isEmpty()) {
+			listaLadder.push(nuevoLadder->pop());
+		}
+
+
+		int maxStackSize = 0;
+		LinkedStack<LinkedList<Card>*>  listaLadderTemp = listaLadder;
+		while (!listaLadderTemp.isEmpty()) {
+			int cantidadLadder = listaLadderTemp.pop()->getSize();
+			if (cantidadLadder > maxStackSize)
+				maxStackSize = cantidadLadder;
+		}
+		
+		for (int row = 0; row < maxStackSize; row++) {
+			LinkedStack<LinkedList<Card>*> listaLadderTemp2 = listaLadder;
+			while (!listaLadderTemp2.isEmpty()) {
+				LinkedList<Card>* ladder = listaLadderTemp2.pop();
+
+				if (row < ladder->getSize()) {
+					ladder->goToPos(row);
+					cout << ladder->getElement() << " ";
+				}
+				else {
+					cout << "   "; 
+				}
+			}
+			cout << endl;
+		}
+		delete nuevoLadder;
 	}
+
 
 	void deshacer() {
 		deshacerMovimiento();
@@ -169,7 +204,6 @@ public:
 
 	void moverCartas(int cantidad, int col) {
 	}
-
 
 
 	~SpiderGame() {
