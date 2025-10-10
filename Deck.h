@@ -1,7 +1,20 @@
-    #pragma once
+#pragma once
+
 #include "Card.h"
 #include "LinkedList.h"
 
+/*
+ *  Deck.h - Clase mazo que representa un mazo de Cartas
+ *  Colaboradores:
+ *  - Daniel Caleb Vargas Mora - 10/7/2025 Creacion
+ *  - Daniel Caleb Vargas Mora - 10/8/2025 Adaptacion para multiples barajas
+ *  - Alejandro Villalobos Ramírez - 10/9/2025 Corrección para evitar limpiar las cartas
+ *  Descripcion:
+ *  - Representa el naipe de cartas en el juego, contiene funciones
+ *  para generar, barajar y sacar cartas del naipe dejandolo vacio.
+ *  - Se puede crear un mazo con multiples barajas indicandolo en el 
+ *  constructor.
+ */
 
 class Deck
 {
@@ -51,6 +64,7 @@ public:
 	};
 
 	void shuffle() {
+        // https://www.geeksforgeeks.org/dsa/shuffle-a-given-array-using-fisher-yates-shuffle-algorithm/
 		// Fisher-Yates shuffle algorithm
         int size = Cards->getSize();
         if (size <= 1) return;

@@ -1,7 +1,10 @@
+#include <iostream>
+#include <string>
 #include "Card.h"
 #include "Deck.h"
 #include "SpiderGame.h"
 #include "GolfGame.h"
+#include "windows.h" // No cuestionar
 
 using std::string;
 using std::cin;
@@ -9,13 +12,21 @@ using std::getline;
 using std::endl;
 using std::stoi;
 
+/*
+ *	main.cpp - Programa principal
+ *	Colaboradores:
+ *	- Daniel Caleb Vargas Mora - 10/10/2025 Importacion
+ *	- David Alonso Vega Hidalgo - 10/10/2025 Construcción y Agregado de funciones
+ *	Descripcion: 
+ *	- Realiza la funcion de mostrar la interfaz del programa y 
+ *  manejar el sistema de rondas y puntaje de los juegos
+ */
 
-
-
-
-// Black magic
-const bool ADMIN = true;
+// Uso de hacks
+// 67
+const bool ADMIN = false;
 bool BYPASS = false;
+// Black magic
 static void clrscr() { cout << "\033[2J\033[1;1H"; };
 
 static void waitForEnter() {
@@ -206,7 +217,7 @@ void playSpider(SpiderGame* game) {
 }
 
 int main() {
-	//SetConsoleOutputCP(65001);
+	SetConsoleOutputCP(65001);
 	srand(time(NULL));
 	SpiderGame* spiderGame = new SpiderGame();
 	GolfGame* golfGame = new GolfGame();
@@ -228,4 +239,6 @@ int main() {
 			cout << "[*] Hacks " << (BYPASS ? "activados" : "desactivados") << endl;
 		}
 	}
+	delete spiderGame;
+	delete golfGame;
 }

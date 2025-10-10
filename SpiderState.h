@@ -4,6 +4,14 @@
 #include "LinkedStack.h"
 #include "LinkedList.h"
 
+/*
+ *	SpiderState.h - Clase que controla el registro del juego SpiderGame
+ *	Colaboradores:
+ *  - Daniel Caleb Vargas Mora - 10/7/2025 Creacion de la clase
+ *	- Alejandro Villalobos Ramírez - 10/9/2025
+ *	Descripcion: 
+ *	- Funciona como un snapshot del estado actual del juego SpiderGame.
+ */
 
 class SpiderState
 {

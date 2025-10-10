@@ -5,6 +5,19 @@
 #include "SpiderState.h"
 #include "LinkedStack.h"
 
+/*
+ *	SpiderGame.h - Clase que representa una el juego SpiderGame
+ *	Colaboradores:
+ *	- Daniel Caleb Vargas Mora - 10/7/2025 Creacion de la clase
+ *	- Alejandro Villalobos Ramírez - 10/9/2025 Creación clase y métodos
+ *	- Daniel Caleb Vargas Mora - 10/9/2025 Agregacion del metodo de mover cartas
+ *	- David Alonso Vega Hidalgo - 10/9/2025 Agregacion del metodos varios
+ *	Descripcion: 
+ *	- Realiza todas las funciones del juego SpiderGame, iniciarlo, distribuir cartas,
+ *	enviar registro y imprimir cartas.
+ *	- Imprimir en pantalla el juego actual.
+ */
+
 class SpiderGame
 {
 private:

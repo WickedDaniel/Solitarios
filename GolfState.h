@@ -4,6 +4,17 @@
 #include "LinkedStack.h"
 #include "LinkedList.h"
 
+/*
+ *	GolfState.h - Clase que controla el registro del juego GolfGame
+ *	Colaboradores:
+ *	- Daniel Caleb Vargas Mora - 10/7/2025 Creacion de la clase
+ *	- Daniel Caleb Vargas Mora - 10/8/2025 Correccion de constructores de copia
+ *	- Daniel Caleb Vargas Mora - 10/9/2025 Agregacion de contador de movimientos y solucion de stack underflow
+ *  - David Alonso Vega Hidalgo - 10/8/2025 Creación de constructores de copia
+ *	Descripcion:
+ *	- Funciona como un snapshot del estado actual del juego GolfGame
+ */
+
 class GolfState
 {
 private:

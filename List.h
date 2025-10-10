@@ -1,5 +1,14 @@
 #pragma once
 
+/*
+ *	LinkedList.h - Clase que define la interfaz de una lista
+ *	Colaboradores:
+ *	- Mauricio Aviles - ??? Creacion de la clase
+ *  - Alejandro Villalobos Ramírez - 10/8/2025 Creación del constructor de copia
+ *	Descripcion:
+ *	- Interfaz pura que define las operaciones basicas de una lista
+ */
+
 template <typename E>
 class List {
 public:

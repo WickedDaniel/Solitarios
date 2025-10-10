@@ -1,5 +1,14 @@
 #pragma once
 
+/*
+ *	Stack.h - Clase que define la interfaz de una pila
+ *	Colaboradores:
+ *	- Mauricio Aviles - ??? Creacion de la clase
+ *  - David Alonso Vega Hidalgo - 10/8/2025 Creación del constructor de copia
+ *	Descripcion:
+ *	- Interfaz pura que define las operaciones basicas de una pila
+ */
+
 template <typename E>
 class Stack {
 public:

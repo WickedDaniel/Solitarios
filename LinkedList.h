@@ -5,6 +5,20 @@
 #include "List.h"
 #include "Node.h"
 
+/*
+ *	LinkedList.h - Clase que implementa una lista enlazada
+ *	Colaboradores:
+ *	- Mauricio Aviles - ??? Creacion de la clase
+ *  - David Alonso Vega Hidalgo - 10/8/2025 Creación del constructor de copia
+ *	- Daniel Caleb Vargas Mora - 10/8/2025 Correccion de constructores de copia
+ *	- Daniel Caleb Vargas Mora - 10/9/2025 Agregacion de funciones slice y cutTail
+ *	Descripcion:
+ *	- Extiende la clase List para implementar una lista enlazada con nodos,
+ *  se implementan nuevas funcionalidades como slice y cutTail.
+ *	- Slice permite crear una nueva lista a partir de un rango
+ *  - cutTail permite cortar una cantidad de elementos desde el final
+ */
+
 using std::cout;
 using std::endl;
 using std::runtime_error;

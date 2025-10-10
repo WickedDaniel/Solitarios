@@ -4,6 +4,16 @@
 #include <string>
 #include <iostream>
 
+/*
+ *	Card.h - Clase carta que representa una carta jugable
+ *	Colaboradores:
+ *	- Daniel Caleb Vargas Mora - 10/7/2025 Creacion de la clase
+ *	- Daniel Caleb Vargas Mora - 10/8/2025 Agregado de funciones de comparacion
+ *	Descripcion: 
+ *	- Realiza la funcion de representar una carta en el naipe,
+ *	contiene funciones de comparacion para los distintos tipos de solitarios
+ */
+
 using namespace std;
 class Card
 {

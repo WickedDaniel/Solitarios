@@ -4,6 +4,19 @@
 #include "Deck.h"
 #include "GolfState.h"
 #include "LinkedStack.h"
+
+/*
+ *	GolfGame.h - Clase juego que representa el juego de Soliario Golf
+ *	Colaboradores:
+ *	- Daniel Caleb Vargas Mora - 10/7/2025 Creación de la clase
+ *  - David Alonso Vega Hidalgo - 10/7/2025 Agregación de funcionalidades
+ *	Descripcion: 
+ *	- Representa el juego Solitario Golf, contiene las funciones necesarias
+ *	para inicializar el juego, llevar a cabo sus acciones disponibles y 
+ *  validar el gane o pierde de la ronda.
+ *  - Imprimir en pantalla el juego actual.
+ */
+
 class GolfGame
 {
 private:

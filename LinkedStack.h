@@ -5,6 +5,16 @@
 #include "Node.h"
 #include "Stack.h"
 
+/*
+ *	LinkedStack.h - Clase que implementa una lista enlazada
+ *	Colaboradores:
+ *	- Mauricio Aviles - ??? Creacion de la clase
+ *  - David Alonso Vega Hidalgo - 10/8/2025 Creación de constructor de copia
+ *	- Daniel Caleb Vargas Mora - 10/8/2025 Correccion de constructores de copia
+ *	Descripcion:
+ *	- Extiende la clase List para implementar una lista enlazada con nodos.
+ */
+
 using std::runtime_error;
 using std::cout;
 using std::endl;
